@@ -1,8 +1,8 @@
 package cpu
 
+import "base:runtime"
 import "core:fmt"
 import "core:log"
-import "core:runtime"
 import "emulator:bus"
 import "emulator:pic"
 
@@ -77,9 +77,10 @@ Register :: enum {
 
 
 foreign import musashi {
-    "external/Musashi/m68kcpu.o",
-    "external/Musashi/m68kdasm.o", 
-    "external/Musashi/m68kops.o",
+    "musashi:m68kcpu.o",
+    "musashi:m68kdasm.o", 
+    "musashi:m68kops.o",
+    "musashi:softfloat/softfloat.o"
 }
 
 @(default_calling_convention="c")

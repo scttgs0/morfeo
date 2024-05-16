@@ -11,7 +11,8 @@ musashi_objects  += $(musashi_dir)/softfloat/softfloat.o
 build_flags      += -o:speed
 build_flags      += -collection:emulator=emulator
 build_flags      += -collection:lib=lib
-build_flags      += -extra-linker-flags:"-L$(musashi_dir) $(musashi_objects)"
+build_flags      += -collection:musashi=external/Musashi
+build_flags      += -out:morfeo
 
 all: run
 
@@ -37,5 +38,5 @@ release: $(musashi_objects)
 	odin build . -no-bounds-check -disable-assert $(build_flags)
 
 run: $(musashi_objects)
-	odin run   . $(build_flags) -- $(morfeo_args)
+	odin run . $(build_flags) -- $(morfeo_args)
 

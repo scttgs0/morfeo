@@ -60,7 +60,7 @@ init_sdl :: proc(gpu_number: int = 1) -> (ok: bool) {
 
     gui.x_size      = 800
     gui.y_size      = 600
-    gui.scale_mult  = 2
+    gui.scale_mult  = 1
 	gui.fullscreen  = false
     gui.current_gpu = 0 if gpu_number == 0 else 1
 
