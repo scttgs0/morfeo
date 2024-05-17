@@ -1,6 +1,6 @@
 package morfeo
 
-TARGET :: #config(TARGET, "a2560x")
+TARGET :: #config(TARGET, "a2560k")
 
 
 import "lib:emu"
@@ -208,7 +208,9 @@ main :: proc() {
     context.logger  = log.create_console_logger(opt = logger_options)
 
     // init -------------------------------------------------------------
-    when TARGET == "a2560x" {
+    when TARGET == "a2560k" {
+        p := platform.a2560k_make()
+    } else when TARGET == "a2560x" {
         p := platform.a2560x_make()
     } else {
         #panic("Unknown TARGET")
