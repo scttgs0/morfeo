@@ -223,7 +223,7 @@ send_key_to_ps2 :: proc(p: ^platform.Platform, code: sdl2.Scancode, event: sdl2.
     if ps2code == sc_null {
         log.warnf("gui  unknown scancode: %v", code)
         return
-    } 
+    }
 
     if event == .KEYUP {
         ps2code += 0x80

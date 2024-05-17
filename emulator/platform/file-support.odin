@@ -16,7 +16,7 @@ import "emulator:cpu"
 /*
 It is computed by summing the decoded byte values and extracting the LSB of the
 sum (i.e., the data checksum), and then calculating the two's complement of the
-LSB (e.g., by inverting its bits and adding one).  
+LSB (e.g., by inverting its bits and adding one).
 */
 @(private)
 checksum :: proc(bytes: []u8) -> u8 {
@@ -26,7 +26,7 @@ checksum :: proc(bytes: []u8) -> u8 {
 		sum += int(b)
 	}
 
-    cksum := u8(sum & 0xFF) 
+    cksum := u8(sum & 0xFF)
     cksum  = ~cksum
     cksum += 1
 
@@ -90,7 +90,7 @@ read_intel_hex :: proc(bus: ^bus.Bus, cpu: ^cpu.CPU, filepath: string) {
             log.errorf("decoded data len less than 5 for line '%s'", line)
             break loop
         }
-        
+
         last := len(data) - 1
         if data[last] != checksum(data[:last]) {
             log.errorf("checksum mismatch for '%s'", line)
@@ -120,7 +120,7 @@ read_intel_hex :: proc(bus: ^bus.Bus, cpu: ^cpu.CPU, filepath: string) {
                 }
                 byte_count   += record_len
                 in_segment    = true
-                
+
             case 0x01:
                 finished = true
                 if in_segment {
@@ -128,7 +128,7 @@ read_intel_hex :: proc(bus: ^bus.Bus, cpu: ^cpu.CPU, filepath: string) {
                 }
                 break loop
 
-            case 0x04: 
+            case 0x04:
                 base_address = get_extended_linear_address(data) or_break loop
 
             case 0x05:
@@ -152,7 +152,7 @@ read_intel_hex :: proc(bus: ^bus.Bus, cpu: ^cpu.CPU, filepath: string) {
     if ! finished {
         log.error("File was not fully parsed!")
     }
-    
+
 }
 
 

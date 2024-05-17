@@ -17,7 +17,7 @@ RAM :: struct {
 
 ram_read :: #force_inline proc(ram: ^RAM, mode: emu.Request_Size, addr: u32) -> (val: u32) {
     switch mode {
-    case .bits_8: 
+    case .bits_8:
         val = cast(u32) ram.data[addr]
     case .bits_16:
         ptr := transmute(^u16be) &ram.data[addr]
@@ -31,7 +31,7 @@ ram_read :: #force_inline proc(ram: ^RAM, mode: emu.Request_Size, addr: u32) -> 
 
 ram_write :: #force_inline proc(ram: ^RAM, mode: emu.Request_Size, addr, val: u32) {
     switch mode {
-    case .bits_8: 
+    case .bits_8:
         ram.data[addr] = cast(u8) val
     case .bits_16:
         (transmute(^u16be) &ram.data[addr])^ = cast(u16be) val

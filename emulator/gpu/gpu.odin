@@ -70,7 +70,6 @@ GPU :: struct {
 render :: #force_inline proc(gpu: ^GPU) {
     switch g in gpu.model {
     case GPU_Vicky3: vicky3_render_text(g)
-    case GPU_Vicky2: 
+    case GPU_Vicky2:
     }
 }
-

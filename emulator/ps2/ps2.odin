@@ -58,7 +58,7 @@ ps2_make :: proc(name: string, pic: ^pic.PIC) -> ^PS2 {
     s.debug    = true
     s.CCB      = 0
     s.name     = name
-    
+
     return s
 }
 
@@ -117,7 +117,7 @@ ps2_write8 :: proc(s: ^PS2, addr: u32, val: u8) {
 
              s.ccb_write_mode  = false
              s.CCB             = val
-             return 
+             return
         }
 
         switch val {
@@ -168,7 +168,7 @@ ps2_write8 :: proc(s: ^PS2, addr: u32, val: u8) {
    case:
         log.warnf("ps2: %6s Write addr %6x val %2x is not implemented", s.name, addr, val)
    }
-        
+
     return
 }
 

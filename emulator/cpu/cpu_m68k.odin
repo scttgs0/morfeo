@@ -10,7 +10,7 @@ import "lib:emu"
 
 import "core:prof/spall"
 
-// from Musashi - unfortunately Odin cannot import enums from .h 
+// from Musashi - unfortunately Odin cannot import enums from .h
 // files, like Golang
 
 /* CPU types for use in m68k_set_cpu_type() */
@@ -78,7 +78,7 @@ Register :: enum {
 
 foreign import musashi {
     "musashi:m68kcpu.o",
-    "musashi:m68kdasm.o", 
+    "musashi:m68kdasm.o",
     "musashi:m68kops.o",
     "musashi:softfloat/softfloat.o"
 }
@@ -94,7 +94,7 @@ foreign musashi {
 }
 
 CPU_m68k :: struct {
-    using cpu: ^CPU, 
+    using cpu: ^CPU,
 
 	type:	CPU_type
 }
@@ -126,7 +126,7 @@ m68k_make :: proc (name: string, bus: ^bus.Bus) -> ^CPU {
 
 m68k_setpc :: proc(cpu: ^CPU, address: u32) {
    	m68k_set_reg(Register.M68K_REG_PC, uint(address))
-	return 
+	return
 }
 
 
@@ -270,4 +270,3 @@ m68k_write_memory_32 :: proc "c" (address: uint, value: uint) {
 
     return
 }
-

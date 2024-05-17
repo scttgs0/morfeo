@@ -114,80 +114,80 @@ IRQ_GROUP :: enum {
 
 IRQ_MASK :: [IRQ_GROUP][8]IRQ {
     .GRP_NONE = {
-        .NONE, 
-        .IRQ1, 
-        .IRQ2, 
-        .IRQ3, 
-        .IRQ4, 
-        .IRQ5, 
-        .IRQ6, 
+        .NONE,
+        .IRQ1,
+        .IRQ2,
+        .IRQ3,
+        .IRQ4,
+        .IRQ5,
+        .IRQ6,
         .NMI,
     },
 
     .GRP_0A = {
-        .VICKY_A_SOF, 
-        .VICKY_A_SOL, 
-        .VICKY_A_COL_SPR, 
-        .VICKY_A_COL_BM, 
-        .VICKY_A_VDMA, 
-        .VICKY_A_COL_TILE, 
-        .VICKY_A_RESERVED, 
-        .VICKY_A_HOTPLUG, 
+        .VICKY_A_SOF,
+        .VICKY_A_SOL,
+        .VICKY_A_COL_SPR,
+        .VICKY_A_COL_BM,
+        .VICKY_A_VDMA,
+        .VICKY_A_COL_TILE,
+        .VICKY_A_RESERVED,
+        .VICKY_A_HOTPLUG,
     },
 
     .GRP_0B = {
-        .VICKY_B_SOF, 
-        .VICKY_B_SOL, 
-        .VICKY_B_COL_SPR, 
-        .VICKY_B_COL_BM, 
-        .VICKY_B_VDMA, 
-        .VICKY_B_COL_TILE, 
-        .VICKY_B_RESERVED, 
-        .VICKY_B_HOTPLUG, 
+        .VICKY_B_SOF,
+        .VICKY_B_SOL,
+        .VICKY_B_COL_SPR,
+        .VICKY_B_COL_BM,
+        .VICKY_B_VDMA,
+        .VICKY_B_COL_TILE,
+        .VICKY_B_RESERVED,
+        .VICKY_B_HOTPLUG,
     },
 
     .GRP_1A = {
-        .KBD_PS2, 
-        .KBD_A2560K, 
-        .MOUSE, 
-        .COM1, 
-        .COM2, 
-        .LPT1, 
-        .FDC, 
-        .MIDI, 
+        .KBD_PS2,
+        .KBD_A2560K,
+        .MOUSE,
+        .COM1,
+        .COM2,
+        .LPT1,
+        .FDC,
+        .MIDI,
     },
 
     .GRP_1B = {
-        .TIMER0, 
-        .TIMER1, 
-        .TIMER2, 
-        .TIMER3, 
-        .TIMER4, 
-        .RESERVED_3, 
-        .RESERVED_4, 
-        .RTC, 
+        .TIMER0,
+        .TIMER1,
+        .TIMER2,
+        .TIMER3,
+        .TIMER4,
+        .RESERVED_3,
+        .RESERVED_4,
+        .RTC,
     },
 
     .GRP_2A = {
-        .PATA, 
-        .SDC_INS, 
-        .SDC, 
-        .OPM_INT, 
-        .OPN2_EXT, 
-        .OPL3_EXT, 
-        .RESERVED_5, 
-        .RESERVED_6, 
+        .PATA,
+        .SDC_INS,
+        .SDC,
+        .OPM_INT,
+        .OPN2_EXT,
+        .OPL3_EXT,
+        .RESERVED_5,
+        .RESERVED_6,
     },
 
     .GRP_2B = {
-        .BEATRIX_0, 
-        .BEATRIX_1, 
-        .BEATRIX_2, 
-        .BEATRIX_3, 
-        .RESERVED_7, 
-        .DAC1_PB, 
-        .RESERVED_8, 
-        .DAC0_PB, 
+        .BEATRIX_0,
+        .BEATRIX_1,
+        .BEATRIX_2,
+        .BEATRIX_3,
+        .RESERVED_7,
+        .DAC1_PB,
+        .RESERVED_8,
+        .DAC0_PB,
     },
 }
 
@@ -265,7 +265,7 @@ M68K_IRQ :: [IRQ]Irq_table {
 
 PIC :: struct {
     name:       string,
-    id:         int, 
+    id:         int,
 
     read:       proc(^PIC, emu.Request_Size, u32, u32) -> u32,
     write:      proc(^PIC, emu.Request_Size, u32, u32,    u32),
@@ -312,7 +312,7 @@ pic_make :: proc(name: string) -> ^PIC {
 // XXX - workaround
 pic_write :: proc(d: ^PIC, size: emu.Request_Size, addr_orig, addr, val: u32) {
     switch size {
-    case .bits_8: 
+    case .bits_8:
         pic_write8(d, addr, u8(val))
     case .bits_16:
         pic_write8(d, addr  , u8(val >> 8))
@@ -327,7 +327,7 @@ pic_write :: proc(d: ^PIC, size: emu.Request_Size, addr_orig, addr, val: u32) {
 
 pic_read :: proc(d: ^PIC, size: emu.Request_Size, addr_orig, addr: u32) -> (val: u32) {
     switch size {
-    case .bits_8: 
+    case .bits_8:
         return cast(u32) pic_read8(d, addr)
     case .bits_16:
         val = u32(pic_read8(d, addr  )) << 8 |
@@ -366,7 +366,7 @@ pic_read8 :: proc(p: ^PIC, addr: u32) -> (val: u8) {
 }
 
 // there is an assumption:
-// if there is a clear bit on IRQ that is processed then clear 
+// if there is a clear bit on IRQ that is processed then clear
 // marker of 'irq in progress' too
 
 clear_irq :: proc(p: ^PIC, group: IRQ_GROUP, val, reg: u8) {
@@ -447,7 +447,7 @@ pic_write8 :: proc(p: ^PIC, addr: u32, val: u8) {
 }
 
 m68040_trigger :: proc(p: ^PIC, i: IRQ) {
-    
+
     requested := p.irqs[i]
 
     // test if IRQ is masked
@@ -460,8 +460,8 @@ m68040_trigger :: proc(p: ^PIC, i: IRQ) {
         case .GRP_2A:   masked = requested.mask & p.data[MASK_GRP2_A]
         case .GRP_2B:   masked = requested.mask & p.data[MASK_GRP2_B]
         case .GRP_NONE: log.warnf("pic0: %s undefined mask group %s for %s", p.name, requested.group, i)
-    } 
-    
+    }
+
     if masked != 0 {
         log.debugf("pic0: %s irq %s masked: %08b", p.name, i, p.data[MASK_GRP1_A])
         log.debugf("pic0: %s irq %s masked: %08b", p.name, i, p.data[MASK_GRP1_B])
@@ -482,7 +482,7 @@ m68040_trigger :: proc(p: ^PIC, i: IRQ) {
         case .GRP_2A:   p.data[PENDING_GRP0_A] = requested.mask | p.data[PENDING_GRP2_A]
         case .GRP_2B:   p.data[PENDING_GRP0_A] = requested.mask | p.data[PENDING_GRP2_B]
         case .GRP_NONE: log.warnf("pic0: %s undefined mask group %s for %s", p.name, requested.group, i)
-    } 
+    }
 
     p.current = i
     p.group   = p.irqs[i].group

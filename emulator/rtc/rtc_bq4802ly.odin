@@ -13,7 +13,7 @@ import "lib:emu"
  bq4802Y: 5-V   Operation
 bq4802LY: 3.3-V Operation
 
- - following implementation is a very loose variation about 
+ - following implementation is a very loose variation about
  interfaces, nor voltage or reaction times, so...
 
 */
@@ -135,7 +135,7 @@ worker_proc :: proc(p: rawptr) {
 }
 
 bq4802_clock :: proc(r: ^RTC) {
-	
+
 	if t := thread.create_and_start_with_data(r, worker_proc, context); t != nil {
 		r.clock = t
     } else {
@@ -149,5 +149,3 @@ addr_name :: #force_inline proc(i: u32) -> string {
   @static table := REGISTERS
   return table[i]
 }
-
-

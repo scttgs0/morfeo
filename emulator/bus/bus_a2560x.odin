@@ -30,12 +30,12 @@ a2560x_read :: proc(bus: ^Bus, size: emu.Request_Size, addr: u32) -> (val: u32) 
     switch addr {
     case 0x00_00_0000 ..= 0x00_3F_FFFF:  val = bus.ram0->read(size, addr)
     case 0x00_80_0000 ..= 0x00_9F_FFFF:  val = bus.gpu1->read(size, addr, addr - 0x00_80_0000, .VRAM0) // XXX VRAMA i VRAMB
-    case 0x00_A0_0000 ..= 0x00_BF_FFFF:  emu.not_implemented(#procedure, "vram1", size, addr)  
+    case 0x00_A0_0000 ..= 0x00_BF_FFFF:  emu.not_implemented(#procedure, "vram1", size, addr)
     case 0x02_00_0000 ..= 0x05_FF_FFFF:  emu.not_implemented(#procedure, "dram0", size, addr)
     case 0xFE_C0_0080 ..= 0xFE_C0_009F:  val =  bus.rtc->read(size, addr, addr - 0xFE_C0_0080)        // XXX unify that
     case 0xFE_C0_0100 ..= 0xFE_C0_011F:  val =  bus.pic->read(size, addr, addr - 0xFE_C0_0100)
     case 0xFE_C0_0220                 :  val =  bus.gpu0.frames   // TIMER 3
-    case 0xFE_C0_0224                 :  val =  bus.gpu1.frames   // TIMER 4 
+    case 0xFE_C0_0224                 :  val =  bus.gpu1.frames   // TIMER 4
     case 0xFE_C0_0400 ..= 0xFE_C0_040F:  val = bus.ata0->read(size, addr, addr - 0xFE_C0_0400)
     case 0xFE_C0_2060 ..= 0xFE_C0_2068:  val =  bus.ps2->read(size, addr, addr - 0xFE_C0_2060)
 
@@ -102,19 +102,19 @@ a2560x_write :: proc(bus: ^Bus, size: emu.Request_Size, addr, val: u32) {
 }
 
 a2560x_bus_error :: proc(d: ^Bus, op: string, size: emu.Request_Size, addr: u32) {
-    log.errorf("%s err %5s%d    at 0x %04X:%04X - a2560x unknown segment", 
-                d.name, 
-                op, 
-                size, 
-                u16(addr >> 16), 
+    log.errorf("%s err %5s%d    at 0x %04X:%04X - a2560x unknown segment",
+                d.name,
+                op,
+                size,
+                u16(addr >> 16),
                 u16(addr & 0x0000_ffff))
     return
 }
 
 a2560x_not_implemented :: proc(addr: u32, name: string) {
-    log.warnf("%s error      at 0x %04X:%04X - a2560x not implemented", 
-                name, 
-                u16(addr >> 16), 
+    log.warnf("%s error      at 0x %04X:%04X - a2560x not implemented",
+                name,
+                u16(addr >> 16),
                 u16(addr & 0x0000_ffff))
     return
 }

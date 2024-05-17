@@ -74,4 +74,3 @@ hex_digit :: proc(char: byte) -> (u8, bool) {
 	case:             return 0, false
 	}
 }
-

@@ -138,7 +138,7 @@ main_loop :: proc(p: ^platform.Platform) {
 		}
 
         // Step 4: call active GPU to render things
-        //         XXX: frames should be ticked at Start Of Frame, thus on ->render 
+        //         XXX: frames should be ticked at Start Of Frame, thus on ->render
         g->render()
 
         current_ticks = sdl2.GetTicks()
@@ -205,7 +205,7 @@ main_loop :: proc(p: ^platform.Platform) {
 
 main :: proc() {
     logger_options := log.Options{.Level};
-    context.logger  = log.create_console_logger(opt = logger_options) 
+    context.logger  = log.create_console_logger(opt = logger_options)
 
     // init -------------------------------------------------------------
     when TARGET == "a2560x" {
@@ -218,7 +218,7 @@ main :: proc() {
     if !ok do os.exit(1)
 
     init_sdl(config.gpu_id)
-    
+
     // running ----------------------------------------------------------
     main_loop(p)
 
@@ -228,4 +228,3 @@ main :: proc() {
     free(config)
     os.exit(0)
 }
-

@@ -116,7 +116,7 @@ vicky3_make :: proc(name: string, id: int) -> ^GPU {
     g.tc      = make([dynamic]u32,    0x4000)
     g.fg      = make([dynamic]u32,    0x4000) // text foreground LUT cache
     g.bg      = make([dynamic]u32,    0x4000) // text backround  LUT cache
-    g.lut     = make([dynamic]u8,     0x2000) // 8 * 256 * 4 colors 
+    g.lut     = make([dynamic]u8,     0x2000) // 8 * 256 * 4 colors
     g.blut    = make([dynamic]u32,     0x800)
     g.cram    = make([dynamic]u8,      0x100)
     g.font    = make([dynamic]u8,  0x100*8*8) // font cache 256 chars * 8 lines * 8 columns
@@ -126,18 +126,18 @@ vicky3_make :: proc(name: string, id: int) -> ^GPU {
     g.BM0FB   = new([1024*768]u32)            // bitmap0 framebuffer
     g.BM1FB   = new([1024*768]u32)            // bitmap1 framebuffer
 
-    // initial values - XXX - should be memory updated too? 
+    // initial values - XXX - should be memory updated too?
     // maybe they should be set by vicky3_write?
     g.screen_x_size  = 800
     g.screen_y_size  = 600
-    g.resolution     = 2 << 8  
+    g.resolution     = 2 << 8
     g.screen_resized = false
 
     g.pixel_size     = 1
     g.cursor_enabled = true
     g.cursor_visible = true
     g.bitmap_enabled = true // xxx: there is no way to change it in vicky3?
-    g.text_enabled   = true 
+    g.text_enabled   = true
 
     g.border_color_b      = 0x20
     g.border_color_g      = 0x00
@@ -202,9 +202,9 @@ vicky3_delete :: proc(gpu: ^GPU) {
 vicky3_read :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr: u32, mode: emu.Mode = .MAIN) -> (val: u32) {
     d := &gpu.model.(GPU_Vicky3)
     #partial switch mode {
-    case .MAIN_A: 
+    case .MAIN_A:
         val = vicky3_read_register(d, size, addr_orig, addr, mode)
-    case .MAIN_B: 
+    case .MAIN_B:
         val = vicky3_read_register(d, size, addr_orig, addr, mode)
     case .TEXT:
         if size != .bits_8 {
@@ -258,7 +258,7 @@ vicky3_read :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr: u32, mod
         	val  = cast(u32) ptr^
     	}
 
-    case: 
+    case:
         emu.not_implemented(#procedure, d.name, size, addr_orig)
     }
     return
@@ -268,10 +268,10 @@ vicky3_read :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr: u32, mod
 vicky3_write :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr, val: u32, mode: emu.Mode = .MAIN) {
     d := &gpu.model.(GPU_Vicky3)
     #partial switch mode {
-    case .MAIN_A: 
+    case .MAIN_A:
         vicky3_write_register(&d.model.(GPU_Vicky3), size, addr_orig, addr, val, mode)
 
-    case .MAIN_B: 
+    case .MAIN_B:
         vicky3_write_register(&d.model.(GPU_Vicky3), size, addr_orig, addr, val, mode)
 
     case .TEXT:
@@ -289,7 +289,7 @@ vicky3_write :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr, val: u3
             d.bg[addr] =  val & 0x0f
             d.tc[addr] =  val & 0x00_00_00_ff
         }
-        
+
     case .TEXT_FG_LUT:
         if size != .bits_32 {
             emu.unsupported_write_size(#procedure, d.name, d.id, size, addr_orig, val)
@@ -322,7 +322,7 @@ vicky3_write :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr, val: u3
         case .bits_32:
             (transmute(^u32be) &d.lut[addr])^ = cast(u32be) val
         }
-        
+
     case .VRAM0:
         switch size {
         case .bits_8:
@@ -333,7 +333,7 @@ vicky3_write :: proc(gpu: ^GPU, size: emu.Request_Size, addr_orig, addr, val: u3
             (transmute(^u32be) &d.vram0[addr])^ = cast(u32be) val
         }
 
-    case        : 
+    case        :
         emu.not_implemented(#procedure, d.name, size, addr_orig)
     }
     return
@@ -427,7 +427,7 @@ vicky3_write_register :: proc(d: ^GPU_Vicky3, size: emu.Request_Size, addr_orig,
         d.border_x_size = i32((val & VKY3_BCR_X_SIZE) >>  8)
         d.border_y_size = i32((val & VKY3_BCR_Y_SIZE) >> 16)
         vicky3_recalculate_screen(d)
-        
+
     case .VKY3_BRD_COLOR:
         // XXX - convert this to BGRA or something?
         d.border_color_b = u8( val & 0x_00_00_00_ff)
@@ -464,9 +464,9 @@ vicky3_write_register :: proc(d: ^GPU_Vicky3, size: emu.Request_Size, addr_orig,
         emu.not_implemented(#procedure, "VKY3_FONT_MGR1", size, addr_orig)
 
     case .VKY3_BM_L0CR:
-        d.bm0_enabled           = (val & VKY3_BITMAP           ) != 0 
+        d.bm0_enabled           = (val & VKY3_BITMAP           ) != 0
         d.bm0_lut               = (val & VKY3_BITMAP_LUT_MASK  ) >> 1
-        d.bm0_collision_enabled = (val & VKY3_BITMAP_COLLISION ) != 0 
+        d.bm0_collision_enabled = (val & VKY3_BITMAP_COLLISION ) != 0
         log.debugf("gpu%d %s: bitmap_bm0 %v", d.id, d.name, d.bm0_enabled)
 
     case .VKY3_BM_L0PTR:
@@ -522,7 +522,7 @@ vicky3_read_register :: proc(d: ^GPU_Vicky3, size: emu.Request_Size, addr_orig, 
         val |= VKY3_BCR_ENABLE if d.border_enabled else 0
         val |= (u32(d.border_x_size) <<  8)
         val |= (u32(d.border_y_size) << 16)
-        
+
     case .VKY3_BRD_COLOR:
         val  =  u32(d.border_color_b)
         val |= (u32(d.border_color_g) <<  8)
@@ -624,7 +624,7 @@ vicky3_render :: proc(gpu: ^GPU) {
 
 vicky3_render_bm0 :: proc(gpu: ^GPU) {
     g         := &gpu.model.(GPU_Vicky3)
-   
+
     max := u32(g.screen_x_size * g.screen_y_size)
     for i := u32(0); i < max; i += 1 {
         lut_index    := u32(g.vram0[g.bm0_pointer + i])
@@ -636,7 +636,7 @@ vicky3_render_bm0 :: proc(gpu: ^GPU) {
 
 vicky3_render_bm1 :: proc(gpu: ^GPU) {
     g         := &gpu.model.(GPU_Vicky3)
-   
+
     max := u32(g.screen_x_size * g.screen_y_size)
     for i := u32(0); i < max; i += 1 {
         lut_index    := u32(g.vram0[g.bm1_pointer + i])

@@ -37,8 +37,8 @@ create_texture :: proc() -> ^sdl2.Texture {
     texture := sdl2.CreateTexture(
                gui.renderer,
                u32(sdl2.PixelFormatEnum.ARGB8888),      // XXX - I'm not so sure about that
-               sdl2.TextureAccess.STREAMING, 
-               gui.x_size, 
+               sdl2.TextureAccess.STREAMING,
+               gui.x_size,
                gui.y_size
     )
     if texture == nil {
@@ -72,10 +72,10 @@ init_sdl :: proc(gpu_number: int = 1) -> (ok: bool) {
 
     // windows
     gui.window = sdl2.CreateWindow(
-                 WINDOW_NAME, 
-                 sdl2.WINDOWPOS_UNDEFINED, 
-                 sdl2.WINDOWPOS_UNDEFINED, 
-                 gui.x_size * gui.scale_mult, 
+                 WINDOW_NAME,
+                 sdl2.WINDOWPOS_UNDEFINED,
+                 sdl2.WINDOWPOS_UNDEFINED,
+                 gui.x_size * gui.scale_mult,
                  gui.y_size * gui.scale_mult,
                  sdl2.WINDOW_SHOWN
                  //sdl2.WINDOW_SHOWN|sdl2.WINDOW_OPENGL
@@ -113,7 +113,7 @@ new_renderer_and_texture :: proc() -> (ok: bool) {
     sdl2.SetTextureBlendMode(gui.texture_bm0, sdl2.BlendMode.NONE)
 
     sdl2.SetHint("SDL_HINT_RENDER_BATCHING", "1")
-	
+
 	return true
 }
 
@@ -151,48 +151,48 @@ draw_border :: proc(g: ^gpu.GPU) {
     sdl2.SetRenderDrawColor(gui.renderer, g.border_color_r, g.border_color_g, g.border_color_b, sdl2.ALPHA_OPAQUE)
     if gui.fullscreen {
         x := [?]sdl2.Rect {
-                    sdl2.Rect{0, 
-                              0, 
-                              gui.x_size, 
+                    sdl2.Rect{0,
+                              0,
+                              gui.x_size,
                               g.border_y_size},
 
-                    sdl2.Rect{0, 
-                              gui.y_size - g.border_y_size, 
-                              gui.x_size, 
+                    sdl2.Rect{0,
+                              gui.y_size - g.border_y_size,
+                              gui.x_size,
                               g.border_y_size},
 
-                    sdl2.Rect{0, 
-                              g.border_y_size,  
-                              g.border_x_size, 
+                    sdl2.Rect{0,
+                              g.border_y_size,
+                              g.border_x_size,
                               gui.y_size - g.border_y_size},
 
-                    sdl2.Rect{gui.x_size - g.border_x_size, 
-                              g.border_y_size, 
-                              g.border_x_size, 
+                    sdl2.Rect{gui.x_size - g.border_x_size,
+                              g.border_y_size,
+                              g.border_x_size,
                               gui.y_size - g.border_y_size}
                 }
         sdl2.RenderFillRects(gui.renderer, raw_data(x[:]), 4)
 
     } else {
         x :=  [?]sdl2.Rect{
-                    sdl2.Rect{0, 
-                              0, 
-                              gui.x_size                   * gui.scale_mult, 
-                              g.border_y_size              * gui.scale_mult},
-
-                    sdl2.Rect{0, 
-                              (gui.y_size-g.border_y_size) * gui.scale_mult, 
-                              gui.x_size                   * gui.scale_mult, 
+                    sdl2.Rect{0,
+                              0,
+                              gui.x_size                   * gui.scale_mult,
                               g.border_y_size              * gui.scale_mult},
 
                     sdl2.Rect{0,
-                              g.border_y_size              * gui.scale_mult,  
-                              g.border_x_size              * gui.scale_mult, 
+                              (gui.y_size-g.border_y_size) * gui.scale_mult,
+                              gui.x_size                   * gui.scale_mult,
+                              g.border_y_size              * gui.scale_mult},
+
+                    sdl2.Rect{0,
+                              g.border_y_size              * gui.scale_mult,
+                              g.border_x_size              * gui.scale_mult,
                               (gui.y_size-g.border_y_size) * gui.scale_mult},
 
-                    sdl2.Rect{(gui.x_size-g.border_x_size) * gui.scale_mult, 
-                              g.border_y_size              * gui.scale_mult, 
-                              g.border_x_size              * gui.scale_mult, 
+                    sdl2.Rect{(gui.x_size-g.border_x_size) * gui.scale_mult,
+                              g.border_y_size              * gui.scale_mult,
+                              g.border_x_size              * gui.scale_mult,
                               (gui.y_size-g.border_y_size) * gui.scale_mult}
                 }
         sdl2.RenderFillRects(gui.renderer, raw_data(x[:]), 4)
@@ -230,7 +230,7 @@ process_input :: proc(p: ^platform.Platform) {
             #partial switch(e.key.keysym.sym) {
             case .F12: // mask key
             case .F8:  // mask key
-            case: 
+            case:
                 send_key_to_ps2(p, e.key.keysym.scancode, e.type)
             }
         }

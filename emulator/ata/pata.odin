@@ -58,13 +58,13 @@ REG_PATA_SECT_CNT   :: u32(4)
 REG_PATA_SECT_SRT   :: u32(6)  // 06: LBA0: low
 REG_PATA_CLDR_LO    :: u32(8)  // 08: LBA1: med
 REG_PATA_CLDR_HI    :: u32(10) // 0a: LBA2: hi
-REG_PATA_DEVH       :: u32(12) // 0c: LBA3: top - bit 24 to 27 
+REG_PATA_DEVH       :: u32(12) // 0c: LBA3: top - bit 24 to 27
 REG_PATA_CMD_STAT   :: u32(14) // 0e: command or status (write or read)
 
 /*
-Drive / Head Register 
+Drive / Head Register
 Bit     Abbrev  Function
-0 - 3           In CHS addressing, bits 0 to 3 of the head. 
+0 - 3           In CHS addressing, bits 0 to 3 of the head.
                 In LBA addressing, bits 24 to 27 of the block number.
 4       DRV     Selects the drive number.
 5       1       Always set.
@@ -81,7 +81,7 @@ DRIVE :: struct {
     lba3:            u8,     // 0:3 of HEAD or 24:27  of LBA
     sector_count:    u8,     // parameter for operations
 
-    command:         u8, 
+    command:         u8,
     status:          u8,
     err:             ERROR,
     state:           STATE,
@@ -146,12 +146,12 @@ pata_make :: proc(name:string) -> ^PATA {
 
 pata_read :: proc(d: ^PATA, mode: emu.Request_Size, addr_orig, addr: u32) -> (val: u32) {
     switch mode {
-        case .bits_8:  
+        case .bits_8:
             val = cast(u32) pata_read8(d, addr)
         case .bits_16:      // kind of workaround for 0x400 (IDE DATA register)
             val = u32(pata_read8(d, addr  )) << 8 |
                   u32(pata_read8(d, addr+1))
-        case .bits_32:       
+        case .bits_32:
             emu.unsupported_read_size(#procedure, d.name, d.id, mode, addr_orig)
     }
     return
@@ -200,7 +200,7 @@ pata_write8 :: proc(p: ^PATA, addr: u32, val: u8) {
             drive.command  = val                // just for sake
 
             switch val {
-            case 0x00: 
+            case 0x00:
                 log.debugf("pata: %6s write 0x%02x to   %-22s (NOP)", p.name, val, reg[addr])
                 drive.status  &~=  ST_BSY
                 drive.status   |=  ST_DRDY
@@ -239,7 +239,7 @@ pata_write8 :: proc(p: ^PATA, addr: u32, val: u8) {
             p.drive[p.selected].lba3     =  val & DEVH_HEAD // bits 0:3
 
 
-            log.debugf("pata: %6s mode drive %d LBA %t lba3 %d", 
+            log.debugf("pata: %6s mode drive %d LBA %t lba3 %d",
                         p.name, p.selected, p.drive[p.selected].lba_mode, p.drive[p.selected].lba3)
 
         case:
@@ -317,7 +317,7 @@ pata_cmd_read_sectors :: proc(p: ^PATA) {
 
     data_to_read  := int(drive.sector_count) * 512
     if data_to_read == 0 {              // 0 means '256'
-        data_to_read = 256 * 512    
+        data_to_read = 256 * 512
     }
     _, err = os.read(drive.fd, drive.data[0 : data_to_read])
     if err != 0 {
@@ -348,7 +348,7 @@ pata_get_data_from_buffer :: proc(p: ^PATA) -> (retval: u8) {
         log.debugf("pata: %s drive %d read from empty buffer", p.name, p.selected )
         return 0
     }
-    
+
     retval = drive.data[drive.data_pointer]
     //s.debug(LOG_ERROR, "pata: %6s drive %d pointer %d value %d\n", s.name, s.selected, drive.data_pointer, retval )
     drive.data_pointer += 1
@@ -398,7 +398,7 @@ func (s *PATA) Write(fn byte, addr uint32, val byte) error {
         drive.command  = val                // just for sake
 
                 switch val {
-                case 0x00: 
+                case 0x00:
                         s.debug(LOG_TRACE, "pata: %6s write 0x%02x to   %-22s (NOP)\n", s.name, val, REG[addr])
             drive.status  &^=  ST_BSY
             drive.status   |=  ST_DRDY
@@ -437,7 +437,7 @@ func (s *PATA) Write(fn byte, addr uint32, val byte) error {
                 s.drive[s.selected].lba3     =  val & DEVH_HEAD // bits 0:3
 
 
-                s.debug(LOG_TRACE, "pata: %6s mode drive %d LBA %t lba3 %d\n", 
+                s.debug(LOG_TRACE, "pata: %6s mode drive %d LBA %t lba3 %d\n",
                         s.name, s.selected, s.drive[s.selected].lba_mode, s.drive[s.selected].lba3)
 
         default:

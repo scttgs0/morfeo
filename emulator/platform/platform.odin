@@ -12,7 +12,7 @@ import "emulator:memory"
 import "core:fmt"
 import "core:log"
 
-Platform   :: struct { 
+Platform   :: struct {
     delete: proc(^Platform),
 
     cpu:     ^cpu.CPU,
@@ -39,11 +39,9 @@ a2560x_delete :: proc(p: ^Platform) {
     p.bus.ata0->delete()
     p.bus.gpu0->delete()
     p.bus.gpu1->delete()
-     p.bus.pic->delete()
-     p.bus.ps2->delete()
+    p.bus.pic->delete()
+    p.bus.ps2->delete()
     p.bus.ram0->delete()
-     p.bus.rtc->delete()
+    p.bus.rtc->delete()
     return
 }
-
-

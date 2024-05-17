@@ -39,4 +39,3 @@ release: $(musashi_objects)
 
 run: $(musashi_objects)
 	odin run . $(build_flags) -- $(morfeo_args)
-
