@@ -1,7 +1,7 @@
 
 ```
-// przy zapisie do pamięci vicky mogę zaznaczyć 'recalculate' i oszczędzić na mocy!
-// bo bitmapę będę rysowac od nowa tylko jeśli coś przestanie działać!
+// When saving to Vicky memory, I can mark 'Recalculate' and save up!
+// Because Bitmap will be drawn again if something stops working!
 
 
 00_00_0000  00_3F_FFFF    4 MB ram
