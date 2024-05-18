@@ -7,7 +7,7 @@ import "core:log"
 Request_Size :: enum {
     bits_8   = 8,
     bits_16  = 16,
-    bits_32  = 32
+    bits_32  = 32,
 }
 
 // used by devices to denote function
@@ -31,7 +31,7 @@ unsupported_read_size :: proc(procedure, dev_name: string, dev_id: int, mode: Re
                 dev_name,
                 dev_id,
                 mode,
-                u16(addr >> 16), u16(addr & 0x0000_ffff)
+                u16(addr >> 16), u16(addr & 0x0000_ffff),
     )
 }
 
@@ -43,7 +43,7 @@ unsupported_write_size :: proc(procedure, dev_name: string, dev_id: int, mode: R
                 dev_id,
                 mode,
                 u16(val  >> 16), u16(val  & 0x0000_ffff),
-                u16(addr >> 16), u16(addr & 0x0000_ffff)
+                u16(addr >> 16), u16(addr & 0x0000_ffff),
     )
 }
 
@@ -53,6 +53,6 @@ not_implemented :: proc(procedure, dev_name: string, mode: Request_Size, addr: u
                 procedure,
                 dev_name,
                 mode,
-                u16(addr >> 16), u16(addr & 0x0000_ffff)
+                u16(addr >> 16), u16(addr & 0x0000_ffff),
     )
 }

@@ -204,7 +204,7 @@ main_loop :: proc(p: ^platform.Platform) {
 
 
 main :: proc() {
-    logger_options := log.Options{.Level};
+    logger_options := log.Options{.Level}
     context.logger  = log.create_console_logger(opt = logger_options)
 
     // init -------------------------------------------------------------

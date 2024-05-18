@@ -8,7 +8,6 @@ musashi_objects  += $(musashi_dir)/m68kdasm.o
 musashi_objects  += $(musashi_dir)/m68kops.o
 musashi_objects  += $(musashi_dir)/softfloat/softfloat.o
 
-build_flags      += -o:speed
 build_flags      += -collection:emulator=emulator
 build_flags      += -collection:lib=lib
 build_flags      += -collection:musashi=external/Musashi
@@ -34,8 +33,11 @@ $(musashi_objects): external/m68kconf.h
 	$(MAKE) -C $(musashi_dir) clean
 	$(MAKE) -C $(musashi_dir)
 
+debug: $(musashi_objects)
+	odin build . -no-bounds-check -disable-assert -strict-style -o:none -debug $(build_flags)
+
 release: $(musashi_objects)
-	odin build . -no-bounds-check -disable-assert $(build_flags)
+	odin build . -no-bounds-check -disable-assert -strict-style -o:speed $(build_flags)
 
 run: $(musashi_objects)
 	odin run . $(build_flags) -- $(morfeo_args)

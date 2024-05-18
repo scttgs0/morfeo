@@ -64,7 +64,7 @@ GPU :: struct {
                                  // 16 for 60Hz, 14 for 70Hz
     last_tick:         u32,      // when last tick was made
 
-    model: union {GPU_Vicky2, GPU_Vicky3}
+    model: union {GPU_Vicky2, GPU_Vicky3},
 }
 
 render :: #force_inline proc(gpu: ^GPU) {

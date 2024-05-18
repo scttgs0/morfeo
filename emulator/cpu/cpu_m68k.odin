@@ -25,8 +25,8 @@ CPU_type :: enum {
         M68K_CPU_TYPE_68EC040,
         M68K_CPU_TYPE_68LC040,
         M68K_CPU_TYPE_68040,
-        M68K_CPU_TYPE_SCC68070
-};
+        M68K_CPU_TYPE_SCC68070,
+}
 
 M68K_INT_ACK_AUTOVECTOR  ::  0xffffffff
 M68K_INT_ACK_SPURIOUS    ::  0xfffffffe
@@ -72,7 +72,7 @@ Register :: enum {
         /* Convenience registers */
         M68K_REG_PPC,           /* Previous value in the program counter */
         M68K_REG_IR,            /* Instruction register */
-        M68K_REG_CPU_TYPE       /* Type of CPU being run */
+        M68K_REG_CPU_TYPE,      /* Type of CPU being run */
 }
 
 
@@ -80,7 +80,7 @@ foreign import musashi {
     "musashi:m68kcpu.o",
     "musashi:m68kdasm.o",
     "musashi:m68kops.o",
-    "musashi:softfloat/softfloat.o"
+    "musashi:softfloat/softfloat.o",
 }
 
 @(default_calling_convention="c")
@@ -95,8 +95,7 @@ foreign musashi {
 
 CPU_m68k :: struct {
     using cpu: ^CPU,
-
-	type:	CPU_type
+	type:	CPU_type,
 }
 
 
@@ -118,7 +117,7 @@ m68k_make :: proc (name: string, bus: ^bus.Bus) -> ^CPU {
     localbus   = bus
     ctx        = context
 
-    m68k_init();
+    m68k_init()
     m68k_set_cpu_type(c.type)
 
     return cpu

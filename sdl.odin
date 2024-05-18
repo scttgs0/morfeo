@@ -39,7 +39,7 @@ create_texture :: proc() -> ^sdl2.Texture {
                u32(sdl2.PixelFormatEnum.ARGB8888),      // XXX - I'm not so sure about that
                sdl2.TextureAccess.STREAMING,
                gui.x_size,
-               gui.y_size
+               gui.y_size,
     )
     if texture == nil {
         error := sdl2.GetError()
@@ -77,8 +77,8 @@ init_sdl :: proc(gpu_number: int = 1) -> (ok: bool) {
                  sdl2.WINDOWPOS_UNDEFINED,
                  gui.x_size * gui.scale_mult,
                  gui.y_size * gui.scale_mult,
-                 sdl2.WINDOW_SHOWN
-                 //sdl2.WINDOW_SHOWN|sdl2.WINDOW_OPENGL
+                 sdl2.WINDOW_SHOWN,
+                 //sdl2.WINDOW_SHOWN|sdl2.WINDOW_OPENGL,
     )
     if gui.window == nil {
         log.errorf("sdl2.CreateWindow failed.")
@@ -169,7 +169,7 @@ draw_border :: proc(g: ^gpu.GPU) {
                     sdl2.Rect{gui.x_size - g.border_x_size,
                               g.border_y_size,
                               g.border_x_size,
-                              gui.y_size - g.border_y_size}
+                              gui.y_size - g.border_y_size},
                 }
         sdl2.RenderFillRects(gui.renderer, raw_data(x[:]), 4)
 
@@ -193,7 +193,7 @@ draw_border :: proc(g: ^gpu.GPU) {
                     sdl2.Rect{(gui.x_size-g.border_x_size) * gui.scale_mult,
                               g.border_y_size              * gui.scale_mult,
                               g.border_x_size              * gui.scale_mult,
-                              (gui.y_size-g.border_y_size) * gui.scale_mult}
+                              (gui.y_size-g.border_y_size) * gui.scale_mult},
                 }
         sdl2.RenderFillRects(gui.renderer, raw_data(x[:]), 4)
     }

@@ -12,7 +12,7 @@ RAM :: struct {
 
     name:   string,
     data:   [dynamic]u8,
-    size:   int
+    size:   int,
 }
 
 ram_read :: #force_inline proc(ram: ^RAM, mode: emu.Request_Size, addr: u32) -> (val: u32) {

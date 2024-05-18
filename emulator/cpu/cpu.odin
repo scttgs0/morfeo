@@ -17,5 +17,5 @@ CPU :: struct {
     // tick etc. proc
     name:   string,
     bus:    ^bus.Bus,
-    model: union {CPU_65c816, CPU_m68k}
+    model: union {CPU_65c816, CPU_m68k},
 }
